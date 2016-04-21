@@ -160,7 +160,7 @@ public class chapterOne {
     * Output: True(permutations: "taco cat", "atco cta", etc.)
     * */
 
-        //1.4 solution one
+        //1.4 solution one (own)
         public  static boolean isPermutationOfPalindrome1(String string){
 
             int[] letter = new int[128];
@@ -341,8 +341,6 @@ public class chapterOne {
      }
 
      //1.5 solution two
-
-
      public static boolean checkEdit2(String first, String second){
 
          if(Math.abs(first.length() - second.length()) > 1){
@@ -383,6 +381,95 @@ public class chapterOne {
          return true;
      }
 
+     /*
+     * String Compression: Implement a method to perform basic string compression using the counts of repeated characters.
+     * For example, the string aabccccccaaa would become a2b1c5a3. If the "compressed" string would not become smaller than
+     * the original string, your method should return the original string. You can assume the string has only uppercase
+     * and lower case letters
+     * */
+
+     //1.6 solution one (own)
+     public static String compressString1(String string){
+
+         //ArrayList<Object> compressed = new ArrayList<Object>();
+         StringBuilder compressed = new StringBuilder();
+
+         int i = 0, j = 1, count = 1;
+         while(i < string.length() - 1 && j < string.length()){
+
+             if(string.charAt(i) == string.charAt(j)){
+
+                 count++;
+             }else{
+
+                 compressed.append(string.charAt(i));
+                 compressed.append((count));
+                 count = 1;
+                 i = j;
+             }
+             if(j == string.length() - 1){
+
+                 compressed.append(string.charAt(i));
+                 compressed.append((count));
+             }
+             j++;
+         }
+
+         if(string.length() <= compressed.length()){
+
+             return string;
+         }
+
+         return compressed.toString();
+
+     }
+
+     //1.6 solution two
+
+     //public static String compressString2(String string){
+
+     //}
+
+     public static String compressString2(String string){
+
+        int compressedLength = countCompression(string);
+        if(compressedLength >= string.length())     return string;
+
+        StringBuilder compressed = new StringBuilder(compressedLength);
+        int countConsecutive = 0;
+
+        for(int i = 0; i < string.length(); i++){
+
+            countConsecutive++;
+            if(string.charAt(i) != string.charAt(i+1) || i+1 >= string.length()){
+
+                compressed.append(string.charAt(i));
+                compressed.append(countConsecutive);
+                countConsecutive = 0;
+            }
+        }
+
+        return compressed.toString();
+
+     }
+
+     public static int countCompression(String string){
+
+         int compressionLength = 0, countConsecutive = 0;
+
+         for(int i = 0; i < string.length(); i++){
+
+             countConsecutive++;
+             if(i+1 >= string.length() ||string.charAt(i) != string.charAt(i+1)){  //the order cannot be change!
+
+                 compressionLength += 1 + String.valueOf(countConsecutive).length();
+                 countConsecutive = 0;
+             }
+         }
+         return compressionLength;
+
+     }
+
         public static void main(String[] args) {
 
             String s1 = "Mr Smith    ";
@@ -390,7 +477,9 @@ public class chapterOne {
             String s3 = "attc coa";
             String first = "pale";
             String second = "palee";
-            System.out.print(checkEdit2(first, second));
+            String string = "abcdaaaaaac";
+
+            System.out.print(compressString2(string));
 
         /*
         System.out.print(isUniqueCharacter1(s2)); // 1.1
@@ -403,6 +492,7 @@ public class chapterOne {
         System.out.print(isPermutationOfPalindrome1(s3)); //1.4
         System.out.print(isPermutationOfPalindrome2(s3)); //1.4
         System.out.print(checkEdit1(first, second));//1.5
+        System.out.print(checkEdit2(first, second));//1.5
         */
 
         }
