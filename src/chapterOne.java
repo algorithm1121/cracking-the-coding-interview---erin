@@ -282,13 +282,115 @@ public class chapterOne {
             return (bitVector & (bitVector - 1)) == 0;
         }
 
+    /**
+     * One away: There are three types of edits that can be performed on strings. Insert a character, remove a character,
+     * or replace a character. Given two strings, write a function to check if they are one edit(or zero edit) away.
+     */
 
+     //1.5 solution one
+     public static boolean checkEdit1(String first, String second){
+
+         // Insert a character.
+         if(second.length() == first.length())    return oneEditReplace(first, second);
+         else if(second.length() - first.length() == 1)    return insertOne(first, second);
+         else if(first.length() - second.length() == -1)    return insertOne(second, first);
+
+         return false;
+     }
+
+     public static boolean oneEditReplace(String first, String second){
+
+         System.out.print("aa");
+         boolean foundReplace = false;
+
+         for(int i = 0; i < first.length(); i++){
+
+             if(first.charAt(i) != second.charAt(i)){
+
+                 if(foundReplace){
+
+                     return false;
+                 }
+                 foundReplace = true;
+             }
+         }
+         return true;
+     }
+
+     public static boolean insertOne(String first, String second){
+
+         int index1 = 0;
+         int index2 = 0;
+
+         while(index1 < first.length() && index2 < second.length()){
+
+             if(first.charAt(index1) != second.charAt(index2)){
+
+                 if(index1 != index2){
+
+                     return false;
+                 }
+                 index2++;
+             }else{
+
+                 index1++;
+                 index2++;
+             }
+         }
+         return true;
+     }
+
+     //1.5 solution two
+
+
+     public static boolean checkEdit2(String first, String second){
+
+         if(Math.abs(first.length() - second.length()) > 1){
+
+             return false;
+         }
+
+         String s1 = first.length() < second.length() ? first : second;
+         String s2 = first.length() < second.length() ? second : first;
+
+         int index1 = 0;
+         int index2 = 0;
+         boolean foundDifference = false;
+         while(index1< s1.length() && index2 < s2.length()){
+
+             if(s1.charAt(index1) != s2.charAt(index2)){
+
+                 if(foundDifference){
+
+                     return false;
+                 }
+                 foundDifference = true;
+
+                 if(s1.length() == s2.length()){
+
+                     index1++;
+
+                 }
+                 index2++;
+
+             }else {
+
+                 index1++;
+                 index2++;
+             }
+
+         }
+         return true;
+     }
 
         public static void main(String[] args) {
 
             String s1 = "Mr Smith    ";
             String s2 = "abcdef";
             String s3 = "attc coa";
+            String first = "pale";
+            String second = "palee";
+            System.out.print(checkEdit2(first, second));
 
         /*
         System.out.print(isUniqueCharacter1(s2)); // 1.1
@@ -300,6 +402,7 @@ public class chapterOne {
         System.out.print(replacePlaces(s1, 8)); //1.3
         System.out.print(isPermutationOfPalindrome1(s3)); //1.4
         System.out.print(isPermutationOfPalindrome2(s3)); //1.4
+        System.out.print(checkEdit1(first, second));//1.5
         */
 
         }
